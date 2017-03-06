@@ -11,7 +11,7 @@ public class MassExportBitmaps : EditorWindow
     private int size;
     private SubstanceArchive[] substances;
 
-    [MenuItem("Window/Mass Export Bitmaps")]
+    [MenuItem("Window/SubstanceMassExport")]
     static void Init()
     {
         EditorWindow.GetWindow(typeof(MassExportBitmaps));
@@ -92,6 +92,7 @@ public class MassExportBitmaps : EditorWindow
 
                 foreach (ProceduralMaterial substanceMaterial in substanceMaterials)
                 {
+                    substanceMaterial.isReadable = true;//@zpj
                     bool generateAllOutputs = substanceImporter.GetGenerateAllOutputs(substanceMaterial);
 
                     if (!Directory.Exists(basePath + "/" + substance.name + "/" + substanceMaterial.name))
@@ -112,7 +113,7 @@ public class MassExportBitmaps : EditorWindow
 
                     substanceImporter.SetGenerateAllOutputs(substanceMaterial, true);
 
-                    exportBitmaps.Invoke(substanceImporter, new object[] { substanceMaterial, @"H:\Unity\UnityProject\SubstanceToMaterial\EXPORT_HERE", false });
+                    exportBitmaps.Invoke(substanceImporter, new object[] { substanceMaterial, @"EXPORT_HERE", false });
 
                     if (!generateAllOutputs)
                     {
@@ -130,7 +131,7 @@ public class MassExportBitmaps : EditorWindow
                             if (File.Exists(TmpfilePath))
                             {
                                 File.Delete(TmpfilePath);
-                                Debug.Log(TmpfilePath);
+                                //Debug.Log(TmpfilePath);
                             }
                             File.Move(exportedTexture, TmpfilePath);
                         }
@@ -149,9 +150,18 @@ public class MassExportBitmaps : EditorWindow
                     Texture newTmpTexture = new Texture();
                     foreach (ProceduralTexture materialTexture in materialTextures)
                     {
-                        string newTexturePath = materialPath + materialTexture.name + ".tga";
-
-                        Texture newTextureAsset = AssetDatabase.LoadAssetAtPath(newTexturePath, typeof(Texture)) as Texture;
+                        string newTexturePath = materialPath + materialTexture.name + ".tga";// (Clone)
+                        string astmpe = Application.dataPath + newTexturePath.Substring(6);
+                        if (!File.Exists(astmpe))
+                        {
+                            newTexturePath = materialPath + materialTexture.name + " (Clone).tga";
+                            astmpe = Application.dataPath + newTexturePath.Substring(6);
+                            if (!File.Exists(astmpe))
+                            {
+                                Debug.LogError(newTexturePath + "not exist");
+                            }
+                        }
+                        Texture newTextureAsset = (Texture)AssetDatabase.LoadAssetAtPath(newTexturePath, typeof(Texture));
                         if (null != newTextureAsset)
                         {
                             try
@@ -163,7 +173,8 @@ public class MassExportBitmaps : EditorWindow
                                     {
                                         string propertyName = ShaderUtil.GetPropertyName(newMaterial.shader, i);
                                         newTmpTexture = newMaterial.GetTexture(propertyName);
-                                        if (null != newTmpTexture && newTmpTexture.name == newTextureAsset.name)
+                                        //Debug.Log(newTmpTexture.name + " and  " + propertyName + " new assset " + newTextureAsset.name);
+                                        if (null != newTmpTexture && (newTmpTexture.name == newTextureAsset.name || newTmpTexture.name + " (Clone)"  == newTextureAsset.name) )
                                         {
                                             newMaterial.SetTexture(propertyName, newTextureAsset);
                                         }
@@ -176,6 +187,7 @@ public class MassExportBitmaps : EditorWindow
                             }
                         }
 
+                        ProceduralOutputType outType = materialTexture.GetProceduralOutputType();
                         if (materialTexture.GetProceduralOutputType() == ProceduralOutputType.Normal)
                         {
                             TextureImporter textureImporter = AssetImporter.GetAtPath(newTexturePath) as TextureImporter;
