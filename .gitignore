@@ -35,3 +35,5 @@ sysinfo.txt
 *.rar
 TagforGithub/github添加标签.png
 Assets/UnityVS.meta
+ExportFbx/UnityAssetExportFBX/Library
+ExportFbx/UnityAssetExportFBX/Temp
