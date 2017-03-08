@@ -6,7 +6,7 @@
 
 需要导出的格式：
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\1.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/1.png)
 图1
 
 ## 二、解包工具集合
@@ -14,7 +14,7 @@
 网络上找来了各种测试，但是没有一个适合我的，很多都是失败，打不开。
 参考宣雨松的博客，找了还是没有结果。
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\3.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/3.png)
 图3
 
 解包工具有很多种类，
@@ -33,12 +33,12 @@ http://wiki.unity3d.com/index.php?title=ObjExporter
 可以导出部分对象。
 如下图：
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\0.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/0.png)
 图0
 
 而原来unity中模型是这个样子的。
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\4.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/4.png)
 图4
 
 导出的只有武器和头盔，没有人物主体body.
@@ -61,7 +61,7 @@ http://wiki.unity3d.com/index.php?title=ObjExporter
 
 代码中是要查找所有组件中的MeshFilter，发现SkinnedMeshRender组件居然没有这个MeshFilter这个组件，所以总会导出少一个，而这个居然是人的主体。
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\5.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/5.png)
 图5
 
 本来说让美术自己添加一个MeshFilter组件，然后根据mesh render中的mesh自己来添加一个对应的mesh.
@@ -87,13 +87,13 @@ http://wiki.unity3d.com/index.php?title=ObjExporter
 这样修改过，就会自动在没有MeshFilter，但是有skinnedMeshRender组件的节点下，添加一个MeshFilter,然后就可以正常导出成.obj文件，与.FBX是类似的，都可以被3D max编辑使用。
 
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\7.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/7.png)
 图7
 
 最后的在VS中看的模型，因为没有安装3Dmax.
 
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\6.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/6.png)
 图6
 
 虽然看起来简陋，但是满足他们小需要，就好了。
@@ -452,17 +452,17 @@ public class EditorObjExporter : ScriptableObject
 
 步骤一
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\8.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/8.png)
 图8
 
 步骤二
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\10.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/10.png)
 图10
 
 步骤三
 
-![image](H:\Unity\unity_lab\ExportFbx\Img\11.png)
+![image](https://github.com/cartzhang/unity_lab/raw/master/ExportFbx/Img/11.png)
 图11
 
 就可以使用你的模型编辑工具来查看了。
