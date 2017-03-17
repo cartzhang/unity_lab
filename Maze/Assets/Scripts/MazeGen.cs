@@ -19,6 +19,9 @@ public class MazeGen : MonoBehaviour
 {
     public int width, height;
     public Material brick;
+    public Vector3 brickScale = new Vector3(1.5f, 2.8f, 1.5f);
+         
+    //
     private int[,] Maze;
     private Stack<Vector2> _tiletoTry = new Stack<Vector2>();
     private List<Vector2> offsets = new List<Vector2> { new Vector2(0, 1), new Vector2(0, -1), new Vector2(1, 0), new Vector2(-1, 0) };
@@ -26,6 +29,7 @@ public class MazeGen : MonoBehaviour
     private int _width, _height;
     private Vector2 _currentTile;
     public static String MazeString;
+    private GameObject ptype = null;
     public Vector2 CurrentTile
     {
         get { return _currentTile; }
@@ -67,7 +71,7 @@ public class MazeGen : MonoBehaviour
         CurrentTile = Vector2.one;
         _tiletoTry.Push(CurrentTile);
         Maze = CreateMaze();  // generate the maze in Maze Array.
-        GameObject ptype = null;
+       
         for (int i = 0; i <= Maze.GetUpperBound(0); i++)
         {
             for (int j = 0; j <= Maze.GetUpperBound(1); j++)
@@ -80,12 +84,7 @@ public class MazeGen : MonoBehaviour
                 if (Maze[i, j] == 1)
                 {
                     MazeString = MazeString + "X";  // added to create String
-                    ptype = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    ptype.transform.position = new Vector3(i * ptype.transform.localScale.x, 0, j * ptype.transform.localScale.z);
-
-                    if (brick != null) { ptype.GetComponent<Renderer>().material = brick; }
-                    ptype.transform.parent = transform;
-                    ptype.name += i + "_" + j;
+                    CreatBrick(i, j);
                 }
                 else if (Maze[i, j] == 0)
                 {
@@ -226,13 +225,19 @@ public class MazeGen : MonoBehaviour
             blockCubeName = "Cube" + (halfPos-1) + "_" + 0;
             blockCube = GameObject.Find(blockCubeName);
             Destroy(blockCube);
-
-            GameObject ptype = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            ptype.transform.position = new Vector3(halfPos * ptype.transform.localScale.x, 0, 0 * ptype.transform.localScale.z);
-
-            if (brick != null) { ptype.GetComponent<Renderer>().material = brick; }
-            ptype.transform.parent = transform;
-            ptype.name += halfPos + "_" + 0;
+            //
+            CreatBrick(halfPos, 0);
         }
+    }
+
+    private void CreatBrick(int i,int j)
+    {
+        ptype = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        ptype.transform.localScale = brickScale;
+        ptype.transform.position = new Vector3(i * ptype.transform.localScale.x, 0, j * ptype.transform.localScale.z);
+        if (brick != null) { ptype.GetComponent<Renderer>().material = brick; }
+        ptype.transform.parent = transform;
+        ptype.name += i + "_" + j;
+        return;
     }
 }
